@@ -12,6 +12,6 @@ export class MeResolver {
         if(!ctx.req.session!.userId) {
             return null;
         }
-        return prisma.user.findOne(ctx.req.session!.userId);
+        return prisma.user.findOne({where:{id:ctx.req.session!.userId}, include:{posts:true}});
     }
 }

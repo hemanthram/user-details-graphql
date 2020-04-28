@@ -11,7 +11,7 @@ export class DeletePostResolver {
         @Arg("title") title: string,
         @Ctx() ctx: MyContext
     ) {
-        prisma.post.delete({where:{title ,author: ctx.req.session!.userId}});
+        await prisma.post.deleteMany({where:{title ,author: ctx.req.session!.userId}});
         return  `Deleted post with title ${title}`
     }
 
@@ -22,10 +22,9 @@ export class DeletePostResolver {
         @Arg("replace") replace: string,
         @Ctx() ctx: MyContext
     ) {
-        const chk = await prisma.post.findOne({where:{title,author: ctx.req.session!.userId}})
-        if(!chk){return "Title does not exist"}
-        await prisma.post.delete({where:{title,author: ctx.req.session!.userId}});   
-        await prisma.post.create({data:{title:replace,author:ctx.req.session!.userId}});
+        const chk = await prisma.post.findMany({where:{title,author: ctx.req.session!.userId}})
+        if(chk.length === 0){return "Title does not exist"}
+        await prisma.post.updateMany({where:{title,author: ctx.req.session!.userId}, data:{title:replace}});   
         return  `Replaced post with title ${title} with ${replace}`
     }
 

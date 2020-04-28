@@ -11,13 +11,20 @@ export class PostResolver {
         @Arg("title") title: string,
         @Ctx() ctx:MyContext
     ) {
-        const chk = await prisma.post.findOne({where :{title,author : ctx.req.session!.userId}})
-        if(!!chk){return null}
-        return await prisma.post.create({data: {title, author : ctx.req.session!.userId}})
+        const chk = await prisma.post.findMany({where :{title,author: ctx.req.session!.userId}})
+        if(chk.length === 0){
+        return await prisma.post.create({data:{
+            title,
+            by : {connect:{
+                id:ctx.req.session!.userId
+            }}
+        }})
+        }
+        return null;
     }
     
     @Query(() => [Post])
     async viewposts() {
-        return prisma.post.findMany();
+        return await prisma.post.findMany({include:{by:true}});
     }
 }

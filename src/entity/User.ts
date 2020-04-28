@@ -8,5 +8,5 @@ export class User {
   @Field()  lastName: string;
   @Field()  email: string;
   @Field()  name: string;
-  @Field(() => [Post])  posts: [Post];
+  @Field(() => [Post],{nullable:true})  posts: [Post];
 }
