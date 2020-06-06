@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^2.0.0-beta.3",
-    "apollo-server-express": "^2.11.0",
+    "apollo-server-express": "^2.14.2",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
